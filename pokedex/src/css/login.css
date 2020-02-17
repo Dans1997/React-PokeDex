@@ -1,0 +1,12 @@
+body {
+    background-color: rgb(64, 64, 64);
+    color: white;
+}
+
+.center {
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    top: 25%;
+    right: 50%;
+}
