@@ -1,5 +1,5 @@
 import React from 'react';
-import Pokedex from '../api/pokedex';
+import Pokedex from '../components/pokedex';
 import Login from '../components/login'
 import Home from '../components/home'
 
@@ -19,7 +19,6 @@ export default function Routing() {
             <div className="link">
                 <Link to='/home'>Home</Link> <br/>    
                 <Link to='/login'>Login</Link> <br/>
-                <Link to='/pokedex'>Pokedex</Link>
 
                 <Switch>
                     <Route path="/home" component={Home} />
