@@ -5,7 +5,7 @@ class Fetch extends React.Component {
     constructor (props) {
         super(props);
 
-        this.state = { apiResponse: {} , search: "pokemon/ditto/", lastSearch: " "};
+        this.state = { apiResponse: {}, search: " ", lastSearch: " " };
     }
 
     renderJSON = (json) => {
@@ -13,6 +13,10 @@ class Fetch extends React.Component {
         // JSON is an object
     
         // This pretty prints all the JSON from the API
+
+        if (this.state.err === 1) {
+            return <div>  </div>
+        }
     
         var jsonKeys = [];
         var aux = 0;
@@ -41,19 +45,21 @@ class Fetch extends React.Component {
        this.fetchPokedex(this.state.search);
     }
 
+    // Send an API GET Request every time <Fetch /> is called
     componentDidUpdate() {
-        //console.log(this.props.search)
         this.fetchPokedex(this.props.search);
     }
 
     fetchPokedex = (search) => {
 
-        if(!search) { return; }
+        if(!search) { 
+            search = " ";
+         }
 
         let fetchTerm = `https://pokeapi.co/api/v2/${search}`;
 
         // Don't search the same term twice
-        if( search == this.state.lastSearch ) { 
+        if( search === this.state.lastSearch ) { 
             //console.log("Detected same GET request. Denied.")
             return; 
         }
@@ -64,14 +70,12 @@ class Fetch extends React.Component {
         // Save last search
         this.setState( { lastSearch: search } )
 
-        console.log(fetchTerm);
-
         fetch(fetchTerm)
             .then(res => res.json())
             .then((data) => {
                 this.setState({ apiResponse: data })
         })
-        .catch(console.log())
+        .catch(this.setState({ apiResponse: {data : null} }) )
     }
 
     render () {
@@ -87,4 +91,4 @@ export default Fetch;
 
 // { this.renderJSON(this.state.apiResponse).map( elem =>  <div key={elem}> {` ${elem} `} </div>) }
 
-// {this.fetchPokedex(this.props.search)}
+// { this.fetchPokedex(this.props.search) }

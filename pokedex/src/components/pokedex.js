@@ -8,7 +8,7 @@ class Pokedex extends React.Component
     {
         super(props);
 
-        this.state = { search: " " }
+        this.state = { search: " ", finalSearch: " " }
     }
 
     renderLoginCredentials = () => {
@@ -27,10 +27,9 @@ class Pokedex extends React.Component
 
     // Calls API
     onSubmit = (event) => {
-        event.preventDefault();
-
-        console.log(this.state.search)
-        
+        event.preventDefault(); 
+        let aux = this.state.search;
+        this.setState( { finalSearch: aux } )
     }
 
     render () 
@@ -39,12 +38,12 @@ class Pokedex extends React.Component
             <div>
                 <h1> This is the Pokedex!</h1>
                 <h2> Everything you need to know about Pokemon! </h2>
-                <form onSubmit={this.onSubmit} >
+                <form>
                     <input type="text" placeholder="Search something..." size="50" value={this.state.search} onChange={this.onChange} /> 
                     <p> Need a hint? Try pokemon/ditto/, pokemon/1/ , type/3/ or ability/4/. </p>
-                    <input type="submit" value="Search"></input>
+                    <input type="submit" value={"Search"} onClick={this.onSubmit}></input>
                 </form> <br />
-                <Fetch search={this.state.search} />
+                <Fetch search={this.state.finalSearch} />
             </div>
         );
     }
