@@ -8,7 +8,7 @@ class Pokedex extends React.Component
     {
         super(props);
 
-        this.state = { search: " ", finalSearch: " " }
+        this.state = { search: "", finalSearch: " " }
     }
 
     renderLoginCredentials = () => {
