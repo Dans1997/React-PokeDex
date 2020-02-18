@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-class Fetch extends React.Component {
+class JSONRenderer extends React.Component {
 
     constructor(props) {
         super(props);
@@ -109,7 +108,7 @@ class Fetch extends React.Component {
     }
 }
 
-export default Fetch;
+export default JSONRenderer;
 
 // { this.renderJSON(this.state.apiResponse).map( elem =>  <div key={elem}> {` ${elem} `} </div>) }
 
