@@ -9,6 +9,10 @@
     height: 500px;
 }
 
+.ribbon {
+    width: 350px;
+}
+
 .ui.card:hover {
     box-shadow: 0 80px 160px 0 rgba(0,0,0,0.2);
 }
