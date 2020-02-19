@@ -1,5 +1,5 @@
 import React from 'react';
-import PokeCard from './pokecard';
+import PokeList from './pokelist';
 import JSONRenderer from './renderJSON';
 import { withRouter } from "react-router-dom";
 
@@ -42,19 +42,13 @@ class Pokedex extends React.Component
                 <form>
                     <input type="text" placeholder="Search something..." size="50" value={this.state.search} onChange={this.onChange} /> 
                     <p> Need a hint? Try pokemon/ditto/, pokemon/1/ , type/3/ or ability/4/. </p>
-                    <input type="submit" value={"Search"} onClick={this.onSubmit}></input>
+                    <input type="submit" value="Search" onClick={this.onSubmit}></input>
                 </form> <br />
                 <JSONRenderer search={this.state.finalSearch} />
-                <PokeCard name="Bulbasaur" number="1" desc="Grass Pokémon" imageSrc="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"/>
+                <PokeList />
             </div>
         );
     }
 }
 
 export default withRouter(Pokedex);
-
-/*
-    <PokeCard name="Bulbasaur" number="1" desc="Grass Pokémon" imageSrc="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"/>
-    <PokeCard name="Charmander" number="4" desc="Fire Pokémon" imageSrc="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png"/>
-    <PokeCard name="Squirtle" number="7" desc="Water Pokémon" imageSrc="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png"/>
-*/

@@ -5,7 +5,7 @@ class JSONRenderer extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { apiResponse: {}, search: " ", lastSearch: " " };
+        this.state = { apiResponse: {}, search: " "};
     }
 
     /*untitled = (json) => {
@@ -33,14 +33,7 @@ class JSONRenderer extends React.Component {
                 splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
             }
 
-            // let test = json[key]
-            // console.log('jkson', json)
-            // console.log('key', key)
-            // console.log('test', test)
-            // console.log('typeof', typeof test)
-
             if (typeof json[key] === "object" && json[key] !== null) {
-                //console.log(json[key])
                 if(json[key] && typeof json[key] !== 'string' && json[key].length){
                     // JSON[KEY] IS AN ARRAY
                     json[key].forEach((elem) => {
@@ -56,7 +49,6 @@ class JSONRenderer extends React.Component {
                 splitStr.push(': ' + json[key]);
             }
 
-            // Directly return the joined string
             jsonKeys[aux] = splitStr.join(' ');
 
             aux++
@@ -65,11 +57,7 @@ class JSONRenderer extends React.Component {
         return jsonKeys;
     }
 
-    componentDidMount() {
-        this.fetchPokedex(this.state.search);
-    }
-
-    // Send an API GET Request every time <Fetch /> is called
+    // Send an API GET Request every time component updates
     componentDidUpdate() {
         this.fetchPokedex(this.props.search);
     }
@@ -80,8 +68,6 @@ class JSONRenderer extends React.Component {
             search = " ";
         }
 
-        let fetchTerm = `https://pokeapi.co/api/v2/${search}`;
-
         // Don't search the same term twice
         if (search === this.state.lastSearch) {
             //console.log("Detected same GET request. Denied.")
@@ -91,7 +77,7 @@ class JSONRenderer extends React.Component {
         // Save last search
         this.setState({ lastSearch: search })
 
-        fetch(fetchTerm)
+        fetch(`https://pokeapi.co/api/v2/${search}`)
             .then(res => res.json())
             .then((data) => {
                 this.setState({ apiResponse: data })
