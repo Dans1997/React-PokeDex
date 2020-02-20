@@ -6,7 +6,7 @@
     transition: 0.3s;
 
     width: 350px;
-    height: 500px;
+    height: 700px;
 }
 
 .ribbon {
@@ -15,16 +15,4 @@
 
 .ui.card:hover {
     box-shadow: 0 80px 160px 0 rgba(0,0,0,0.2);
-}
-
-.ui.card.green {
-    background-color: olivedrab;
-}
-
-.ui.card.blue {
-    background-color: blue;
-}
-
-.ui.card.orange {
-    background-color: orange;
 }
