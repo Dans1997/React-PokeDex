@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import PokeType from './poketype';
 import '../css/pokecard.css'
+import '../css/poketype.css';
 
 // PROPS
 // Name, Number, Brief Description and Image
@@ -83,20 +84,19 @@ class PokeCard extends React.Component {
     }
 
     render() {
-        let { typesa } = this.state;
         return (
             <div className="three wide column" >
                 <div className={`ui link card`} >
-                    <div className="ui image"><img src={this.state.imageUrl} style={{ width: "250px" }} /> </div>
-                    <a className="ui orange left ribbon label">Some Other Info</a>
+                    <div className="ui image"><img src={this.state.imageUrl} /> </div>
+                    <a className={`ui orange left ribbon label`}>Some Other Info</a>
                     <div className="content" >
                         <div className="header">{this.state.name}</div>
                         <div className="meta"><span className="date">No. {`${this.state.pokemonIndex}`}</span></div>
-                        <div className="description">
+                        <div className="description" >
                             {this.state.pokemonDescription}
-                            <div className="types">
-                                {this.renderPokeType(this.state.types).map(item => <PokeType type={item} />)}
-                            </div>
+                        </div>
+                        <div className="types" style={{marginTop: '100%'}}>
+                                {this.renderPokeType(this.state.types).map(item => <PokeType key={item} type={item} />)}
                         </div>
                     </div>
                     <div className="extra content">

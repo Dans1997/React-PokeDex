@@ -1,71 +1,80 @@
-.Bug {
-    color: #B1C12E;
+.ui.label {
+    color: black;
 }
 
-.Dark {
-    color: #4F3A2D;
+.ui.label.Bug {
+    background-color: #B1C12E;
 }
 
-.Dragon {
-    color: #755EDF;
+.ui.label.Dark {
+    background-color: #4F3A2D;
+    color: white
 }
 
-.Electric {
-    color: #FCBC17;
+.ui.label.Dragon {
+    background-color: #755EDF;
+    color: white
 }
 
-.Fairy {
-    color: #F4B1F4;
+.ui.label.Electric {
+    background-color: #FCBC17;
 }
 
-.Fighting {
-    color: #823551;
+.ui.label.Fairy {
+    background-color: #F4B1F4;
 }
 
-.Fire {
-    color: #E73B0C;
+.ui.label.Fighting {
+    background-color: #823551;
+    color: white
 }
 
-.Flying {
-    color: #A3B3F7;
+.ui.label.Fire {
+    background-color: #E73B0C;
 }
 
-.Ghost {
-    color: #6060B2;
+.ui.label.Flying {
+    background-color: #A3B3F7;
 }
 
-.Grass {
-    color: #74C236;
+.ui.label.Ghost {
+    background-color: #6060B2;
+    color: white
 }
 
-.Ground {
-    color: #D3B357;
+.ui.label.Grass {
+    background-color: #74C236;
 }
 
-.Ice {
-    color: #A3E7FD;
+.ui.label.Ground {
+    background-color: #D3B357;
 }
 
-.Normal {
-    color: #C8C4BC;
+.ui.label.Ice {
+    background-color: #A3E7FD;
 }
 
-.Poison {
-    color: #934594;
+.ui.label.Normal {
+    background-color: #C8C4BC;
 }
 
-.Psychic {
-    color: #ED4882;
+.ui.label.Poison {
+    background-color: #934594;
+    color: white
 }
 
-.Rock {
-    color: #B9A156;
+.ui.label.Psychic {
+    background-color: #ED4882;
 }
 
-.Steel {
-    color: #B5B5C3;
+.ui.label.Rock {
+    background-color: #B9A156;
 }
 
-.Water {
-    color: #3295F6;
+.ui.label.Steel {
+    background-color: #B5B5C3;
+}
+
+.ui.label.Water {
+    background-color: #3295F6;
 }
