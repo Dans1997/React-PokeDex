@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { withRouter } from "react-router-dom";
 import PokeType from './poketype';
 import '../css/pokecard.css'
 import '../css/poketype.css';
@@ -9,13 +10,20 @@ import '../css/poketype.css';
 
 class PokeCard extends React.Component {
 
-    state = {
-        name: " ",
-        imageUrl: " ",
-        pokemonIndex: " ",
-        pokemonDescription: " ",
-        types: null,
+    constructor(props) 
+    {
+        super(props);
+        this.state = {
+            name: " ",
+            imageUrl: " ",
+            pokemonIndex: " ",
+            pokemonDescription: " ",
+            types: null,
+            pokemonResponse: {},
+            pokemonSpeciesResponse: {}
+        }
     }
+
 
     async componentDidMount() {
         const { name, url } = await this.props;
@@ -26,14 +34,14 @@ class PokeCard extends React.Component {
         const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonIndex}.png`;
 
         // pokemon/pokemonIndex
-        const apiResponse1 = await axios.get(url);
-        var types = apiResponse1.data.types;
+        const pokemonResponse = await axios.get(url);
+        var types = pokemonResponse.data.types;
 
         // pokemon-species/pokemonIndex -> Where the Flavor Texts are stored
-        const apiResponse2 = await axios.get(apiResponse1.data.species.url);
+        const pokemonSpeciesResponse = await axios.get(pokemonResponse.data.species.url);
 
         // Get all flavor texts in English
-        var flavorTexts = apiResponse2.data.flavor_text_entries.map((flavorText, index) => {
+        var flavorTexts = pokemonSpeciesResponse.data.flavor_text_entries.map((flavorText, index) => {
             if (flavorText.language.name === 'en') {
                 return flavorText.flavor_text;
             }
@@ -56,7 +64,9 @@ class PokeCard extends React.Component {
             imageUrl,
             pokemonIndex,
             pokemonDescription,
-            types
+            types,
+            pokemonResponse,
+            pokemonSpeciesResponse,
         })
     }
 
@@ -83,12 +93,37 @@ class PokeCard extends React.Component {
         return auxArray;
     }
 
+    onClick = (event) => {
+        event.preventDefault();
+
+        console.log("Clicked on card!");
+
+        let {name, imageUrl, pokemonIndex, pokemonDescription, types} = this.state;
+        let pokemonAbilities = this.state.pokemonResponse.abilities
+        let pokemonMoves = this.state.pokemonResponse.moves
+        let pokemonStats = this.state.pokemonResponse.stats
+
+        this.props.history.push({
+            pathname: `/details/${this.state.pokemonIndex}`,
+            state: {
+                name,
+                imageUrl,
+                pokemonIndex,
+                pokemonDescription,
+                types,
+                pokemonAbilities: pokemonAbilities,
+                pokemonMoves : pokemonMoves,
+                pokemonStats : pokemonStats
+                }
+        })
+    }
+
     render() {
         return (
             <div className="three wide column" >
-                <div className={`ui link card`} >
+                <div className={`ui link card`} onClick={this.onClick}>
                     <div className="ui image"><img src={this.state.imageUrl} /> </div>
-                    <a className={`ui orange left ribbon label`}>Some Other Info</a>
+                    <a className={`ui orange left ribbon label`}>Summary</a>
                     <div className="content" >
                         <div className="header">{this.state.name}</div>
                         <div className="meta"><span className="date">No. {`${this.state.pokemonIndex}`}</span></div>
@@ -100,9 +135,7 @@ class PokeCard extends React.Component {
                         </div>
                     </div>
                     <div className="extra content">
-                        <a href={this.state.url}>
-                            Details
-                        </a>
+                        Click to see more about this Pokémon!
                     </div>
                 </div>
             </div>
@@ -110,4 +143,4 @@ class PokeCard extends React.Component {
     }
 }
 
-export default PokeCard;
+export default withRouter(PokeCard);

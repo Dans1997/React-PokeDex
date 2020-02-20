@@ -15,9 +15,6 @@ class Login extends React.Component
         let email = this.state.email;
         let password = this.state.password;
 
-        console.log(email);
-        console.log(password);
-
         this.props.history.push({
             pathname: '/pokedex',
             state: {email: email, password: password}

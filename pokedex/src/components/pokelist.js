@@ -9,7 +9,7 @@ import PokeCard from './pokecard';
 class PokeList extends React.Component {
 
     state = {
-        url: 'https://pokeapi.co/api/v2/pokemon/?limit=986',
+        url: 'https://pokeapi.co/api/v2/pokemon/?limit=151',
         apiResponse: null
     }
 
