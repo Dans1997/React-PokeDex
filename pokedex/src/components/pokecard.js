@@ -14,7 +14,6 @@ class PokeCard extends React.Component {
         pokemonIndex: " ",
         pokemonDescription: " ",
         types: null,
-        typesa: [],
     }
 
     async componentDidMount() {
@@ -74,20 +73,13 @@ class PokeCard extends React.Component {
             typesArray = types;
         }
 
-        typesArray.map(element => {
+        const auxArray = typesArray.map(element => {
             var str = element.type.name;
             var nameUpperCase = str[0].toUpperCase() + str.slice(1);
-            this.setState({ typesa: [...this.state.typesa, nameUpperCase] })
+            return nameUpperCase;
         })
-        /*
-                typesArray.forEach(element => {
-                    var str = element.type.name;
-                    var nameUpperCase = str[0].toUpperCase() + str.slice(1);
-                    console.log(nameUpperCase)
-                    return <PokeType type={nameUpperCase}/>;
-                });*/
 
-        // return <PokeType type="Poison"/>
+        return auxArray;
     }
 
     render() {
@@ -103,7 +95,7 @@ class PokeCard extends React.Component {
                         <div className="description">
                             {this.state.pokemonDescription}
                             <div className="types">
-                                {typesa.length > 0 && typesa.map(item => <PokeType type={item} />)}
+                                {this.renderPokeType(this.state.types).map(item => <PokeType type={item} />)}
                             </div>
                         </div>
                     </div>
