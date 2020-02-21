@@ -7,16 +7,25 @@
     height: 90vh;
 }
 
-.small {
-    background-color: olive;
-}
-
 .ui.card:hover {
-    box-shadow: 0 80px 160px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 80px 160px 0 rgb(0, 0, 0);
 }
 
 .ui.image {
-    justify-content: center;
+    height: 250px;
+    width: 100%;
+}
+
+.ui.card>.image>img, .ui.cards>.card>.image>img{
+    margin: 0 auto;
+}
+
+.ui.header>.image:not(.icon), .ui.header>img{
+    width: 100%;
+}
+
+.ui.image img, .ui.image svg {
+    width: 100%;
 }
 
 .ribbon {

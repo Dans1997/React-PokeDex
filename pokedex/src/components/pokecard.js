@@ -8,6 +8,23 @@ import '../css/poketype.css';
 // PROPS
 // Name, Number, Brief Description and Image
 
+export function renderPokeType (types) {
+
+    var typesArray = [];
+
+    if (types) {
+        typesArray = types;
+    }
+
+    const auxArray = typesArray.map(element => {
+        var str = element.type.name;
+        var nameUpperCase = str[0].toUpperCase() + str.slice(1);
+        return nameUpperCase;
+    })
+
+    return auxArray;
+}
+
 class PokeCard extends React.Component {
 
     constructor(props) 
@@ -65,32 +82,15 @@ class PokeCard extends React.Component {
             pokemonIndex,
             pokemonDescription,
             types,
-            pokemonResponse,
-            pokemonSpeciesResponse,
+            pokemonResponse: pokemonResponse.data,
+            pokemonSpeciesResponse: pokemonSpeciesResponse.data,
         })
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.types !== this.state.types) {
-            this.renderPokeType(this.state.types);
+            renderPokeType(this.state.types);
         }
-    }
-
-    renderPokeType = (types) => {
-
-        var typesArray = [];
-
-        if (types) {
-            typesArray = types;
-        }
-
-        const auxArray = typesArray.map(element => {
-            var str = element.type.name;
-            var nameUpperCase = str[0].toUpperCase() + str.slice(1);
-            return nameUpperCase;
-        })
-
-        return auxArray;
     }
 
     onClick = (event) => {
@@ -101,7 +101,28 @@ class PokeCard extends React.Component {
         let {name, imageUrl, pokemonIndex, pokemonDescription, types} = this.state;
         let pokemonAbilities = this.state.pokemonResponse.abilities
         let pokemonMoves = this.state.pokemonResponse.moves
-        let pokemonStats = this.state.pokemonResponse.stats
+
+        // Pokemon Stats
+        let pokemonHeight = this.state.pokemonResponse.height * 10;
+        let pokemonWeight = this.state.pokemonResponse.weight / 10;
+        let pokemonStats = this.state.pokemonResponse.stats.map(elem=>elem.base_stat);
+
+        // Pokemon Species Data
+        let pokemonBaseHappiness = this.state.pokemonSpeciesResponse.base_hapiness;
+        let pokemonCaptureRate = this.state.pokemonSpeciesResponse.capture_rate;
+        let pokemonEggGroups = this.state.pokemonSpeciesResponse.egg_groups.map((elem,index) => {
+            var str = elem.name; 
+            if(index >= Object.keys(this.state.pokemonSpeciesResponse.egg_groups).length - 1) return str[0].toUpperCase() + str.slice(1) + ' ';
+            return str[0].toUpperCase() + str.slice(1) + ', ';
+        });
+        let evolvesFrom = this.state.pokemonSpeciesResponse.evolves_from_species;
+        let evolutionChainURL = this.state.pokemonSpeciesResponse.evolution_chain.url;
+        let pokemonGenderRate = this.state.pokemonSpeciesResponse.gender_rate;
+        let pokemonGrowthRate = this.state.pokemonSpeciesResponse.growth_rate.name;
+        let pokemonGrowthRateUrl = this.state.pokemonSpeciesResponse.growth_rate.url;
+        let hasGenderDiffs = this.state.pokemonSpeciesResponse.has_gender_differences ? 'Existent' : 'None';
+        let pokemonHatchCounter = this.state.pokemonSpeciesResponse.hatch_counter * 250;
+        let isPokemonBaby = this.state.pokemonSpeciesResponse.is_baby ? 'Yes' : 'No';
 
         this.props.history.push({
             pathname: `/details/${this.state.pokemonIndex}`,
@@ -113,8 +134,21 @@ class PokeCard extends React.Component {
                 types,
                 pokemonAbilities: pokemonAbilities,
                 pokemonMoves : pokemonMoves,
-                pokemonStats : pokemonStats
-                }
+                pokemonHeight,
+                pokemonWeight,
+                pokemonGenderRate,
+                hasGenderDiffs,
+                pokemonHatchCounter,
+                isPokemonBaby,
+                pokemonStats,
+                pokemonBaseHappiness,
+                pokemonCaptureRate,
+                evolvesFrom,
+                evolutionChainURL,
+                pokemonGrowthRate,
+                pokemonGrowthRateUrl,
+                pokemonEggGroups
+            }
         })
     }
 
@@ -131,7 +165,7 @@ class PokeCard extends React.Component {
                             {this.state.pokemonDescription}
                         </div>
                         <div className="types" style={{marginTop: '100%'}}>
-                                {this.renderPokeType(this.state.types).map(item => <PokeType key={item} type={item} />)}
+                                {renderPokeType(this.state.types).map(item => <PokeType key={item} type={item} />)}
                         </div>
                     </div>
                     <div className="extra content">
