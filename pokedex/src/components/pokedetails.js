@@ -3,6 +3,9 @@ import PokeType from './poketype';
 import { renderPokeType } from "./pokecard";
 import '../css/pokedetails.css'
 
+import { Tabs } from 'antd';
+const { TabPane } = Tabs;
+
 class PokeDetails extends React.Component {
     constructor(props) {
         super(props)
@@ -14,7 +17,7 @@ class PokeDetails extends React.Component {
             types: null,
             pokemonAbilities: null,
             pokemonMoves: null,
-            pokemonStats: null
+            pokemonStats: null,
         }
     }
 
@@ -74,16 +77,6 @@ class PokeDetails extends React.Component {
         return(
             <div className="ui centered main card">
                 <div className="content">
-                    <div className="ui secondary menu">
-                        <a className="active item">
-                            About
-                            <div className="content">
-                            </div>
-                        </a>
-                        <a className="item">Base Stats</a>
-                        <a className="item">Evolution</a>
-                        <a className="item">Moves</a>
-                    </div>
                     <div className="ui centered header"><h1>{this.state.name}</h1></div>
 
                     <div className="ui centered header" style={{margin: "auto"}}>
