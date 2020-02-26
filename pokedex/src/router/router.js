@@ -18,9 +18,6 @@ export default function Routing() {
     return (
         <Router> 
             <div className="link">
-                <Link to='/home'>Home</Link> <br/>    
-                <Link to='/login'>Login</Link> <br/>
-
                 <Switch>
                     <Route path="/home" component={Home} />
                     <Route path="/login" component={Login} /> 

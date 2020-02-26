@@ -28,6 +28,10 @@
     width: 100%;
 }
 
+.hidden{
+    visibility: hidden;
+}
+
 .ribbon {
     width: 350px;
 }

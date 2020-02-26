@@ -65,6 +65,30 @@ class PokeCard extends React.Component {
             else return 0;
         });
 
+        // Get the evolution chain data
+        let evolutionChainURL = pokemonSpeciesResponse.data.evolution_chain.url;
+            let evolutionChainResponse = await axios.get(evolutionChainURL);
+            let evolutionChainResponseData = evolutionChainResponse.data.chain;
+
+            let evolutionArray = [];
+            evolutionArray.push(evolutionChainResponseData.species.name);
+
+            let thirdEvolutionArray = [];
+            let secondEvolutionArray = evolutionChainResponseData.evolves_to.map(element => {
+
+                if(element.evolves_to.length >= 1)
+                {
+                    let auxArray = element.evolves_to.map(otherElement => {
+                        return [otherElement.species.name, otherElement.evolution_details];
+                    })
+                    thirdEvolutionArray = auxArray;
+                }
+
+                return [element.species.name, element.evolution_details];
+            });
+            secondEvolutionArray.push(thirdEvolutionArray);
+            evolutionArray.push(secondEvolutionArray)
+
         var pokemonDescriptionsEn = [];
         var aux = 0;
 
@@ -75,13 +99,14 @@ class PokeCard extends React.Component {
         }
 
         var pokemonDescription = pokemonDescriptionsEn[Math.floor(Math.random() * pokemonDescriptionsEn.length)];
-
+        console.log(evolutionArray)
         this.setState({
             name: nameUpperCase,
             imageUrl,
             pokemonIndex,
             pokemonDescription,
             types,
+            evolutionArray, 
             pokemonResponse: pokemonResponse.data,
             pokemonSpeciesResponse: pokemonSpeciesResponse.data,
         })
@@ -99,7 +124,11 @@ class PokeCard extends React.Component {
         console.log("Clicked on card!");
 
         let {name, imageUrl, pokemonIndex, pokemonDescription, types} = this.state;
-        let pokemonAbilities = this.state.pokemonResponse.abilities
+        let pokemonAbilities = this.state.pokemonResponse.abilities.map((ability,index) => {
+            var str = ability.ability.name; 
+            if(index >= Object.keys(this.state.pokemonSpeciesResponse.egg_groups).length - 1) return str[0].toUpperCase() + str.slice(1) + ' ';
+            return str[0].toUpperCase() + str.slice(1) + ', ';
+        });
         let pokemonMoves = this.state.pokemonResponse.moves
 
         // Pokemon Stats
@@ -115,10 +144,17 @@ class PokeCard extends React.Component {
             if(index >= Object.keys(this.state.pokemonSpeciesResponse.egg_groups).length - 1) return str[0].toUpperCase() + str.slice(1) + ' ';
             return str[0].toUpperCase() + str.slice(1) + ', ';
         });
-        let evolvesFrom = this.state.pokemonSpeciesResponse.evolves_from_species;
-        let evolutionChainURL = this.state.pokemonSpeciesResponse.evolution_chain.url;
+
+        let evolutionArray = this.state.evolutionArray;
         let pokemonGenderRate = this.state.pokemonSpeciesResponse.gender_rate;
-        let pokemonGrowthRate = this.state.pokemonSpeciesResponse.growth_rate.name;
+        let str2 = this.state.pokemonSpeciesResponse.growth_rate.name;
+            str2 = str2.split('-').join(' ');
+            var splitStr = str2.toLowerCase().split(' ');
+
+            for (var i = 0; i < splitStr.length; i++) {
+                splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+            }
+            let pokemonGrowthRate = splitStr.join(' ');
         let pokemonGrowthRateUrl = this.state.pokemonSpeciesResponse.growth_rate.url;
         let hasGenderDiffs = this.state.pokemonSpeciesResponse.has_gender_differences ? 'Existent' : 'None';
         let pokemonHatchCounter = this.state.pokemonSpeciesResponse.hatch_counter * 250;
@@ -143,8 +179,7 @@ class PokeCard extends React.Component {
                 pokemonStats,
                 pokemonBaseHappiness,
                 pokemonCaptureRate,
-                evolvesFrom,
-                evolutionChainURL,
+                evolutionArray,
                 pokemonGrowthRate,
                 pokemonGrowthRateUrl,
                 pokemonEggGroups
