@@ -161,6 +161,10 @@ class PokeDetails extends React.Component {
         );
     }
 
+    isOdd = (num) => {
+        return num % 2;
+    }
+
     processEvolutionDetails = (details) => {
         if(!details) { 
             return "No Details"; 
@@ -217,6 +221,7 @@ class PokeDetails extends React.Component {
         console.log(evolutionArray);
 
         let firstPokemon = evolutionArray[0];
+            firstPokemon = firstPokemon[0].toUpperCase() + firstPokemon.slice(1)
         let secondPokemonArray = evolutionArray[1];
             var aux = 0;
             var secondInstanceEvolutions = [" "];
@@ -257,23 +262,21 @@ class PokeDetails extends React.Component {
             secondInstanceEvolutions = secondInstanceEvolutions.slice(1);
             console.log(secondInstanceEvolutions);
 
-        var index = 0;
-        const arrayLength = secondInstanceEvolutions.length;
+        return secondInstanceEvolutions.map((elem,index) => {
+            if(!this.isOdd(index))
+            {
+                let evolutionName = elem[0].toUpperCase() + elem.slice(1);
+                let details = secondInstanceEvolutions[index + 1];
 
-        do 
-        {
-            var evolutionName = secondInstanceEvolutions[index];
-            index++;
-            var details = secondInstanceEvolutions[index];
-            index++;
-            console.log(details);
-            return (
-                <div>
-                    <p> {firstPokemon} evolves to {evolutionName} </p>
-                    <p> {details} </p>
-                </div>
-            );
-        } while (index < arrayLength)   
+                return (
+                    <div>
+                        <p> {firstPokemon} evolves to {evolutionName} </p>
+                        <p> {details} </p>
+                        <div className="ui horizontal divider"> </div>
+                    </div>
+                );
+            }
+        }); 
     }
 
     renderEvolution = () => {
@@ -311,59 +314,12 @@ class PokeDetails extends React.Component {
         );
     }
 
-    renderMoves = () => {
-        return(
-            <div className="ui centered main card">
-                <div className="content">
-                    <div className="ui centered header"><h1>{this.state.name}</h1></div>
-
-                    <div className="ui centered header" style={{margin: "auto"}}>
-                        {renderPokeType(this.state.types).map(item => <PokeType key={item} type={item} />)}
-                    </div>
-
-                    <div className="ui centered header" style={{margin: "auto", height: "250px"}}>
-                        <div className="ui image"> <img src={this.state.imageUrl} /></div>
-                    </div>                    
-                    <div className="meta"><span className="date">#{`${this.state.pokemonIndex}`}</span></div>
-
-
-                    <div className="ui horizontal divider">DESCRIPTION</div>
-
-                    <div className="description">
-                        {this.state.pokemonDescription}
-                    </div>
-
-                    <div className="ui segment">
-                        <div className="ui very relaxed two column grid">
-                            <div className="column">
-                                <p style={{color:"black"}}>Height: {this.state.pokemonHeight} cm</p>
-                            </div>
-                            <div className="column">
-                                <p style={{color:"black"}}>Weight: {this.state.pokemonWeight} Kg</p>
-                            </div>
-                        </div>
-                        <div className="ui vertical divider"></div>
-                    </div>  
-
-                    <div className="ui horizontal divider">BREEDING</div>
-
-                    <div className="description"><h4> Gender Ratio: <i className="ui man icon"></i>{this.state.pokemonGenderRate} - 1<i className="ui woman icon"></i> </h4> </div>
-                    <div className="description"><h4> Gender Differences: {this.state.hasGenderDiffs} </h4> </div>                   
-                    <div className="description"><h4> Egg Groups: {this.state.pokemonEggGroups} </h4> </div>
-                    <div className="description" ><h4> Hatch Counter: {this.state.pokemonHatchCounter} Steps </h4>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
     render(){
         const { activeItem } = this.state;
 
         var about = 'hidden';
         var stats = 'hidden';
         var evolution = 'hidden';
-        var moves = 'hidden';
 
         switch (activeItem) {
             case "About":
@@ -374,9 +330,6 @@ class PokeDetails extends React.Component {
                 break;
             case "Evolution":
                 evolution = 'visible';
-                break;
-            case "Moves":
-                moves = 'visible';
                 break;
             default:
                 about = 'visible';
@@ -404,12 +357,6 @@ class PokeDetails extends React.Component {
                     onClick={this.handleItemClick}
                     style={{color: "ivory"}}
                     />
-                    <Menu.Item
-                    name='Moves'
-                    active={activeItem === 'Moves'}
-                    onClick={this.handleItemClick}
-                    style={{color: "ivory"}}
-                    />
                 </Menu>
 
                 <Card.Group>
@@ -424,10 +371,6 @@ class PokeDetails extends React.Component {
 
                     <Card className={evolution}>
                         { this.renderEvolution() }
-                    </Card>
-
-                    <Card className={moves}>
-                        { this.renderMoves() }
                     </Card>
                     
                 </Card.Group>
