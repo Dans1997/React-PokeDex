@@ -1,4 +1,7 @@
-![My final product](link-to-image)
+![List of Pokemon](https://github.com/Dans1997/React-PokeDex/blob/master/pokedex/public/Pokelist.PNG)
+![Details: About](https://github.com/Dans1997/React-PokeDex/blob/master/pokedex/public/About.PNG)
+![Details: Base Stats](https://github.com/Dans1997/React-PokeDex/blob/master/pokedex/public/Base%20Stats.PNG)
+![Details: Evolution](https://github.com/Dans1997/React-PokeDex/blob/master/pokedex/public/Evolution.PNG)
 
 # Project Description
 
