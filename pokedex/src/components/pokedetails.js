@@ -162,26 +162,53 @@ class PokeDetails extends React.Component {
     }
 
     processEvolutionDetails = (details) => {
-        /* EXAMPLE EVOLUTION DETAIL
-        gender: null
-        held_item: null
-        item: null
-        known_move: null
-        known_move_type: null
-        location: null
-        min_affection: null
-        min_beauty: null
-        min_happiness: null
-        min_level: 16
-        needs_overworld_rain: false
-        party_species: null
-        party_type: null
-        relative_physical_stats: null
-        time_of_day: ""
-        trade_species: null
-        trigger: {name: "level-up", url: "https://pokeapi.co/api/v2/evolution-trigger/1/"}
-        turn_upside_down: false
-        */
+        if(!details) { 
+            return "No Details"; 
+        }
+
+        if (!details.trigger) {
+            return "Error";
+        }
+
+        var detailsArray = [];
+
+        if (details.gender) detailsArray.push("Requires gender " + details.gender) ;
+        if (details.held_item) detailsArray.push("Requires holding " + details.held_item.name) ;
+        if (details.item) detailsArray.push("Requires " + details.item.name);
+        if (details.known_move) detailsArray.push("Requires known move " + details.known_move.name);
+        if (details.known_move_type) detailsArray.push("Requires known move type " + details.known_move_type.name);
+        if (details.location) detailsArray.push("Requires levelling up at " + details.location.name); //TODO: WHEN LOCATION LENGTH IS BIGGER THAN 1
+        if (details.min_affection) detailsArray.push("Requires minimum affection of " + details.min_affection);
+        if (details.min_beauty) detailsArray.push("Requires minimum beauty of " + details.min_beauty);
+        if (details.min_happiness) detailsArray.push("Requires minimum happiness of " + details.min_happiness);
+        if (details.min_level) detailsArray.push("Requires minimum level of " + details.min_level);
+        if (details.needs_overworld_rain !== null) {
+            if (details.needs_overworld_rain === true)
+            detailsArray.push("Requires overworld rain");
+        }
+        //if (details.party_species) 
+        //if (details.party_type)
+        //if (details.relative_physical_stats)
+        if (details.time_of_day) detailsArray.push("Requires levelling up at " + details.time_of_day);
+        //if (details.trade_species)
+        if (details.turn_upside_down !== null) {
+            if (details.turn_upside_down === true)
+            detailsArray.push("Requires to turn upside down");
+        }
+
+        if(detailsArray.length > 1) {
+            let detailsString = "";
+            detailsArray.forEach((element, index) => {
+                if (index === 0) {
+                    detailsString += element;
+                } else {
+                    detailsString += " & " + element;
+                }
+            })
+            return detailsString;
+        }
+
+        return detailsArray[0];
     }
 
     renderEvolutionChain = (evolutionArray) => {
@@ -198,27 +225,55 @@ class PokeDetails extends React.Component {
 
                 if(element[0].length > 1 && typeof(element[0]) !== typeof "string") 
                 {
+                    // Get Pokemon Name
                     console.log(element[0]);
                     let aux2 = element[0];
                     secondInstanceEvolutions.push(aux2[0]);
-                    // let details = this.processEvolutionDetails(aux[1]);
+
+                    // Process Evolution Details (Second Instance)
+                    let detailsObj = aux2[1];
+                    let processedDetails = this.processEvolutionDetails(detailsObj[0]);
+                    secondInstanceEvolutions.push(processedDetails);
                 }
                 else
                 {
+                    // Get Pokemon Name
                     secondInstanceEvolutions.push(element[0]);
+
+                    // Get Evolution Details (First Instance)
+                    let aux2 = element[1];
+                    if(aux2) 
+                    {
+                        let detailsObj = aux2[0];
+                        let processedDetails = this.processEvolutionDetails(detailsObj);
+                        secondInstanceEvolutions.push(processedDetails);
+                    }
                 }
 
                 console.log(secondInstanceEvolutions[aux], aux)
                 aux++;
                 return aux;
             });
-            console.log(secondInstanceEvolutions.slice(1));
+            secondInstanceEvolutions = secondInstanceEvolutions.slice(1);
+            console.log(secondInstanceEvolutions);
 
-        return (
-            <div>
-                {firstPokemon} evolves to {} at level {}
-            </div>
-        );
+        var index = 0;
+        const arrayLength = secondInstanceEvolutions.length;
+
+        do 
+        {
+            var evolutionName = secondInstanceEvolutions[index];
+            index++;
+            var details = secondInstanceEvolutions[index];
+            index++;
+            console.log(details);
+            return (
+                <div>
+                    <p> {firstPokemon} evolves to {evolutionName} </p>
+                    <p> {details} </p>
+                </div>
+            );
+        } while (index < arrayLength)   
     }
 
     renderEvolution = () => {
@@ -238,16 +293,7 @@ class PokeDetails extends React.Component {
 
                     <div className="ui horizontal divider">EVOLUTION CHAIN</div>
 
-                    <div className="description">
-                        Evolves from: {this.state.evolvesFrom}
-                    </div> <br/>
-
-                    <div className="description">
-                        Evolves to 
-                        <div className="lel" style={{margin: "auto", height: "96px"}}>
-                            <div className="img"> <img src={this.state.imageUrl} /></div>
-                        </div> 
-                        at level 
+                    <div className="description"> 
                         {this.renderEvolutionChain(this.state.evolutionArray)}
                     </div>
 
